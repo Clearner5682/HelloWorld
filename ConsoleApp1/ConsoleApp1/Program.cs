@@ -12,13 +12,9 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            //if (args != null && args.Length > 0)
-            //{
-            //    EventLogHelper.Information(args[0]);
-            //}
-            //EventLogHelper.Information("ConsoleApp1 Execute");
+            SingletonTest.Test();
 
-            CreateDelegateTest.Test();
+            Console.ReadKey();
         }
     }
 
