@@ -12,7 +12,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            SingletonTest.Test();
+            Decorator.Test();
 
             Console.ReadKey();
         }
