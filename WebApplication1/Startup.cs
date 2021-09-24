@@ -18,6 +18,7 @@ namespace WebApplication1
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            var identityServerUrl = Configuration.GetValue<string>("IdentityServerUrl");
         }
 
         public IConfiguration Configuration { get; }
