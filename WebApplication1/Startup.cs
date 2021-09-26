@@ -29,6 +29,10 @@ namespace WebApplication1
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllersWithViews();
 
+            services.AddResponseCompression(options=> { 
+                
+            });
+
             EngineContext.Init(services.BuildServiceProvider());
         }
 
@@ -49,6 +53,19 @@ namespace WebApplication1
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            #region 压缩Http响应的中间件
+
+            //app.UseResponseCompression();
+
+            // 如果只想对特定请求压缩Http响应，可以使用UseWhen，在满足特定条件的情况下才将压缩Http响应的中间件加入到管道中
+            app.UseWhen(context => {
+                return context.Request.Path == "/api/compression/test1"||context.Request.Path=="/api/compression/test2";
+            }, applicationBuilder => {
+                applicationBuilder.UseResponseCompression();
+            });
+
+            #endregion
 
             app.Use(async (context, next) => {
                 if (context.Request.Path == "/")
