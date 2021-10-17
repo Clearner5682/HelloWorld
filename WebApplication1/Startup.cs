@@ -32,6 +32,7 @@ namespace WebApplication1
             services.AddResponseCompression(options=> { 
                 
             });
+            services.AddResponseCaching();
 
             EngineContext.Init(services.BuildServiceProvider());
         }
@@ -64,6 +65,13 @@ namespace WebApplication1
             }, applicationBuilder => {
                 applicationBuilder.UseResponseCompression();
             });
+
+            #endregion
+
+            #region 缓存Http响应的中间件
+
+            //使用了该中间件，缓存就变成了服务器端缓存
+            app.UseResponseCaching();
 
             #endregion
 
