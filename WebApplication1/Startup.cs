@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,11 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using WebApplication1.Middlewares;
 
 namespace WebApplication1
 {
@@ -33,6 +39,62 @@ namespace WebApplication1
                 
             });
             services.AddResponseCaching();
+
+            #region JWT身份认证
+
+            //services.AddAuthentication("Bearer")
+            //    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, configOptions=> {
+            //        configOptions.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            // 3+2
+            //            ValidateIssuerSigningKey = true,
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("JWT-SignKey"))),
+            //            ValidateIssuer=false,// 如果这里为true，则令牌的Issuer必须和下面指定的Issuer一致，否则认证失败
+            //            ValidIssuer ="testIssuer",
+            //            ValidateAudience=false,// 如果这里为true，则令牌的Audience必须和下面指定的Audience一致，否则认证失败
+            //            ValidAudience ="testAudience",
+
+
+            //            RequireExpirationTime=true,
+            //            ValidateLifetime=true,// 令牌的有效期会有一段摇摆期，默认值为300秒，也就是在原有效期过期5分钟之内令牌仍然是有效的
+            //            ClockSkew=TimeSpan.FromSeconds(0)// 没有摇摆期
+            //        };
+            //    });
+
+            #endregion
+
+            #region Cookie身份认证
+            
+            services.AddAuthentication(configOptions=> {
+                configOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;// 设置了DefaultScheme，这样DefaultSignInScheme，DefaultChallengeScheme，DefalutForbidScheme都会使用该Scheme
+                //configOptions.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                .AddCookie(configOptions => {
+                    configOptions.Cookie.Name = "MyCookieAuthentication";
+                    configOptions.Cookie.HttpOnly = true;
+                    //configOptions.Cookie.Domain = "";
+                    configOptions.ExpireTimeSpan = TimeSpan.FromSeconds(60);
+                    //configOptions.ReturnUrlParameter = "abc";
+                    //configOptions.LoginPath = new PathString("/Account/Login");
+                    //configOptions.AccessDeniedPath = new PathString("/Account/Denied");
+                    //configOptions.LogoutPath = new PathString("/Account/Logout");
+                    configOptions.Cookie.Path = "/";
+                    configOptions.SlidingExpiration = true;// 滚动刷新过期时间
+                    configOptions.Events = new CookieAuthenticationEvents
+                    {
+                        //身份认证成功之后执行的事件
+                        OnValidatePrincipal = CustomCookieAuthenticationEvents.OnValidateAsync,
+                        //未登录跳转事件（默认的情况下会跳转，这对前后端分离不太友好，因此这里重写该事件）
+                        OnRedirectToLogin=CustomCookieAuthenticationEvents.OnRedirectToLogin,
+                        //无权限（认证成功，授权失败）跳转事件（同上）
+                        OnRedirectToAccessDenied = CustomCookieAuthenticationEvents.OnRedirectToAccessDenied,
+                        //登录成功之后执行
+                        OnSigningIn = CustomCookieAuthenticationEvents.OnSigningIn,
+                    };
+                });
+
+
+            #endregion
 
             EngineContext.Init(services.BuildServiceProvider());
         }
@@ -85,6 +147,10 @@ namespace WebApplication1
 
                 await next.Invoke();
             });
+
+            app.UseAuthentication();
+
+            //app.UseMiddleware<JWTMiddleware>();
 
             app.UseAuthorization();
 
