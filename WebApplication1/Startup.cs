@@ -71,7 +71,7 @@ namespace WebApplication1
             })
                 .AddCookie(configOptions => {
                     configOptions.Cookie.Name = "MyCookieAuthentication";
-                    configOptions.Cookie.HttpOnly = true;
+                    configOptions.Cookie.HttpOnly = true;// HttpOnly表示该Cookie不能被客户端脚本获取
                     //configOptions.Cookie.Domain = "";
                     configOptions.ExpireTimeSpan = TimeSpan.FromSeconds(60);
                     //configOptions.ReturnUrlParameter = "abc";
