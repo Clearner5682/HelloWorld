@@ -12,7 +12,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            ThreadTest.TestManualResetEvent();
+            AsyncTest.TestTAP();
 
             Console.ReadKey();
         }
