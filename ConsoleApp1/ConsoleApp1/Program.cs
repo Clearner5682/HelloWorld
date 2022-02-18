@@ -12,7 +12,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            AsyncTest.TestTAP();
+            TimerTest.Test2();
 
             Console.ReadKey();
         }

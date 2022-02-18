@@ -109,5 +109,17 @@ namespace ConsoleApp1
         {
             Console.WriteLine($"顾客开始吃饭");
         }
+
+        public static void TestThreadPool()
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                ThreadPool.QueueUserWorkItem(state => {
+                    Console.WriteLine($"开始执行，ThreadId:{Thread.CurrentThread.ManagedThreadId}");
+                    Thread.Sleep(2000);
+                    Console.WriteLine($"执行完毕，ThreadId:{Thread.CurrentThread.ManagedThreadId}");
+                });
+            }
+        }
     }
 }
