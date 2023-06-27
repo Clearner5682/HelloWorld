@@ -16,6 +16,42 @@ namespace ConsoleApp1
         // 3=>Manual和Auto的根本区别就是一个在Set之后要手动执行Reset来清除信号，一个在Set之后会自动执行Reset来清除信号
         public static ManualResetEvent ManualResetEvent = new ManualResetEvent(false);
 
+        public void Test11()
+        {
+            Thread t100 = new Thread(() => {
+                while (true)
+                {
+                    var input = Console.ReadKey();
+                    if (input.Key == ConsoleKey.D1)
+                    {
+                        AutoResetEvent.Set();//每调用一次Set方法，就可以让一个等待的线程执行（如果多个线程都在等待，则从等待的队列中唤醒一个执行）
+                    }
+                    Thread.Sleep(1000);
+                }
+            });
+            t100.Start();
+
+            AutoResetEvent.WaitOne();
+
+            Console.WriteLine("Test11");
+        }
+
+        public void Test22()
+        {
+            ThreadPool.QueueUserWorkItem(state =>
+            {
+                int num = 0;
+                while (num < 100)
+                {
+                    Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId}工作线程执行...{num}");
+                    num++;
+                    Thread.Sleep(1000);
+                }
+            });
+
+            Console.WriteLine("Test22");
+        }
+
         public static void TestJoin()
         {
             Thread.CurrentThread.Name = "main";
@@ -101,6 +137,7 @@ namespace ConsoleApp1
 
         public static void Cook()
         {
+            Console.WriteLine($"厨师开始做饭...");
             Thread.Sleep(2000);
             Console.WriteLine($"厨师做完饭了...");
         }
