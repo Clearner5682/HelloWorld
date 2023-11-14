@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
 using WebApplication1.Middlewares;
+using WebApplication1.MessageQueue;
 
 namespace WebApplication1
 {
@@ -97,6 +98,10 @@ namespace WebApplication1
             #endregion
 
             EngineContext.Init(services.BuildServiceProvider());
+
+            services.AddSingleton<RabbitMqClient>();
+            services.Configure<RabbitMqEventBusOptions>(Configuration.GetSection("RabbitMQ"));
+            services.AddHostedService<MyNormalListener>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

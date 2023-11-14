@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using ConsoleApp1.表达式树;
 using ConsoleApp1.事件和委托;
 using System.Threading;
+using ConsoleApp1.反射;
 
 namespace ConsoleApp1
 {
@@ -15,20 +16,23 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            System.AppDomain.CurrentDomain.ProcessExit += (sender, e) =>
+            Console.CancelKeyPress += (sender, e) =>
             {
-                Console.WriteLine("Hello world");
+                Console.WriteLine("You pressed CTRL+C");
+                e.Cancel = false;
             };
-            //TimerTest.Test2();
-            //LinqTest.Test();
-            //ExpressionTreeTest.Test();
-            for(int i = 0; i < 10; i++)
+            ReflectionTest.Test();
+            var test = default(dynamic);
+            var test1 = (new List<Guid>()).FirstOrDefault();
+            var test2 = nameof(EnumTest.Test11);
+            var test3=TimeSpan.FromMinutes(20);
+
+            EmitTest.Test();
+
+            while (true)
             {
-                Thread thread = new Thread(new ThreadStart(() =>
-                {
-                    new ThreadTest().Test22();
-                }));
-                thread.Start();
+                Console.WriteLine("Running...");
+                Thread.Sleep(1000);
             }
 
             Console.ReadKey();
@@ -40,5 +44,11 @@ namespace ConsoleApp1
 
             return BitConverter.ToInt64(buffer, 0);
         }
+    }
+
+    public enum EnumTest
+    {
+        Test11,
+        Test22
     }
 }
