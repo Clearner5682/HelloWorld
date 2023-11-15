@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
 using WebApplication1.Middlewares;
 using WebApplication1.MessageQueue;
+using Hangfire;
+using WebApplication1.Hangfire;
 
 namespace WebApplication1
 {
@@ -99,9 +101,29 @@ namespace WebApplication1
 
             EngineContext.Init(services.BuildServiceProvider());
 
+            #region RabbitMQ
+
             services.AddSingleton<RabbitMqClient>();
             services.Configure<RabbitMqEventBusOptions>(Configuration.GetSection("RabbitMQ"));
             services.AddHostedService<MyNormalListener>();
+
+            #endregion
+
+            #region Hangfire
+            
+            services.AddHangfire(configuration =>
+            {
+                configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
+                configuration.UseSimpleAssemblyNameTypeSerializer();
+                configuration.UseRecommendedSerializerSettings();
+                configuration.UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"));
+                configuration.UseActivator(new ContainerJobActivator(services.BuildServiceProvider()));
+            });
+            services.AddHangfireServer();
+
+            #endregion
+
+            services.AddTransient<EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,6 +141,8 @@ namespace WebApplication1
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseHangfireDashboard();
 
             app.UseRouting();
 
@@ -164,6 +188,8 @@ namespace WebApplication1
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHangfireDashboard();
             });
         }
     }
