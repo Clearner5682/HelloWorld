@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -27,7 +28,34 @@ namespace ConsoleApp1.表达式树
             UnaryExpression isTrue = Expression.IsTrue(boolParam);
             LambdaExpression lambda3 = Expression.Lambda(isTrue, boolParam);
             //var result3 = (lambda3.Compile()).DynamicInvoke(false);
+
+            List<UserInfo> userList = new List<UserInfo> { new UserInfo { UserId="id1111",UserName="name1111",Age=18 }, new UserInfo { UserId = "id2222", UserName = "name2222", Age = 18 } };
+            SetAllProperty(userList, "UserName", "danny_hong");
+        }
+
+        public static void SetAllProperty<T>(List<T> list,string property,object propertyValue)
+        {
+            // o.Author="Ninputer"
+            PropertyInfo propertyInfo = typeof(T).GetProperty(property);
+            MethodInfo setMethod = propertyInfo.SetMethod;
+
+            ParameterExpression parameter = Expression.Parameter(typeof(object), "o");
+            var convertExp = Expression.Convert(parameter, propertyInfo.PropertyType);
             
+            ParameterExpression instance = Expression.Parameter(typeof(T),"x");
+            MethodCallExpression callExpression = Expression.Call(instance, setMethod, convertExp);
+            Console.WriteLine(callExpression.ToString());
+            LambdaExpression lambdaExpression = Expression.Lambda<Action<T,object>>(callExpression, instance, parameter);
+            Delegate del = lambdaExpression.Compile();
+
+            
+
+            Console.WriteLine(lambdaExpression.ToString());
+
+            foreach (var item in list)
+            {
+                del.DynamicInvoke(item, propertyValue);
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ using ConsoleApp1.表达式树;
 using ConsoleApp1.事件和委托;
 using System.Threading;
 using ConsoleApp1.反射;
+using ConsoleApp1.抽象类;
 
 namespace ConsoleApp1
 {
@@ -21,13 +22,8 @@ namespace ConsoleApp1
                 Console.WriteLine("You pressed CTRL+C");
                 e.Cancel = false;
             };
-            ReflectionTest.Test();
-            var test = default(dynamic);
-            var test1 = (new List<Guid>()).FirstOrDefault();
-            var test2 = nameof(EnumTest.Test11);
-            var test3=TimeSpan.FromMinutes(20);
 
-            EmitTest.Test();
+            ExpressionTreeTest.Test();
 
             while (true)
             {
