@@ -23,7 +23,8 @@ namespace ConsoleApp1
                 e.Cancel = false;
             };
 
-            ExpressionTreeTest.Test();
+            //ExpressionTreeTest.Test();
+            ExpressionTreeTest11.Test();
 
             while (true)
             {
