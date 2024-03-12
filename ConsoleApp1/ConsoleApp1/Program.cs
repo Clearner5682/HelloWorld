@@ -10,6 +10,11 @@ using ConsoleApp1.事件和委托;
 using System.Threading;
 using ConsoleApp1.反射;
 using ConsoleApp1.抽象类;
+using ConsoleApp1.AOP;
+using Microsoft.Extensions.DependencyInjection;
+using ConsoleApp1.DependencyInject.Services;
+using ConsoleApp1.DependencyInject;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ConsoleApp1
 {
@@ -17,6 +22,17 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
+            IServiceCollection serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton<IGreetingService, GreetingService>();
+            serviceCollection.AddSingleton<IGreetingService, ChineseGreetingService>();
+            serviceCollection.AddSingleton<IGreetingService, EnglishGreetingService>();
+
+            ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+            ServiceLocator.Instance.SetServiceProvider(serviceProvider);
+
+            var greetingService = serviceProvider.GetService<IGreetingService>();
+            greetingService.Greeting();
+
             Console.CancelKeyPress += (sender, e) =>
             {
                 Console.WriteLine("You pressed CTRL+C");
@@ -24,7 +40,8 @@ namespace ConsoleApp1
             };
 
             //ExpressionTreeTest.Test();
-            ExpressionTreeTest11.Test();
+            //ExpressionTreeTest11.Test();
+            //StaticProxyTest.Test();
 
             while (true)
             {
