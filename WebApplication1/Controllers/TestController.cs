@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using WebApplication1.Models;
 using Utils;
+using Newtonsoft.Json;
 
 namespace WebApplication1.Controllers
 {
@@ -28,7 +29,10 @@ namespace WebApplication1.Controllers
         [HttpGet,Route("Test1")]
         public IActionResult Test1()
         {
-            return Ok(new { ErrorCode = 0, Message = "", Data = "Hello world" });
+            var obj = new { ErrorCode = 0, Message = "", Data = "Hello world" };
+            var str = JsonConvert.SerializeObject(obj);
+
+            return Ok(obj);
         }
 
         [HttpPost,Route("Test2")]
