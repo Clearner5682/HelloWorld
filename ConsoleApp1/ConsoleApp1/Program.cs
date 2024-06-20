@@ -15,6 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using ConsoleApp1.DependencyInject.Services;
 using ConsoleApp1.DependencyInject;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using ConsoleApp1.继承和多态;
+using ConsoleApp1.多线程相关;
+using ConsoleApp1.反射.Emit;
 
 namespace ConsoleApp1
 {
@@ -32,6 +35,9 @@ namespace ConsoleApp1
 
             var greetingService = serviceProvider.GetService<IGreetingService>();
             greetingService.Greeting();
+            var greetingService1 = ServiceLocator.Instance.GetService<IGreetingService>();
+            greetingService1.Greeting();
+            var test =greetingService.Equals(greetingService1);
 
             Console.CancelKeyPress += (sender, e) =>
             {
@@ -39,15 +45,7 @@ namespace ConsoleApp1
                 e.Cancel = false;
             };
 
-            //ExpressionTreeTest.Test();
-            //ExpressionTreeTest11.Test();
-            //StaticProxyTest.Test();
-
-            while (true)
-            {
-                Console.WriteLine("Running...");
-                Thread.Sleep(1000);
-            }
+            EmitTest2.Test();
 
             Console.ReadKey();
         }
