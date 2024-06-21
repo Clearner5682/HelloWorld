@@ -8,14 +8,15 @@ using System.Reflection;
 
 namespace ConsoleApp1.反射.Emit
 {
+    // 通过Emit生成程序集、模块、类、字段、属性、方法
     public class EmitTest2
     {
         public static void Test()
         {
             Type baseClassType = typeof(Vehicle);
             Type interfaceType = typeof(IVehicle);
-            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("ConsoleApp1.Emit2"), AssemblyBuilderAccess.Run);
-            ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("ConsoleApp1.Emit2");
+            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("DannyHong.Test.Emit"), AssemblyBuilderAccess.Run);
+            ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("DannyHong.Test.Emit");
             TypeBuilder typeBuilder = moduleBuilder.DefineType("Car", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.AutoClass | TypeAttributes.AnsiClass | TypeAttributes.BeforeFieldInit);
             typeBuilder.SetParent(baseClassType);//设置基类
             typeBuilder.AddInterfaceImplementation(interfaceType);//实现接口

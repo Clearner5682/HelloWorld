@@ -45,7 +45,7 @@ namespace ConsoleApp1
                 e.Cancel = false;
             };
 
-            EmitTest2.Test();
+            EmitTest4.Test();
 
             Console.ReadKey();
         }
