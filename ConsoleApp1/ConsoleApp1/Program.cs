@@ -25,19 +25,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            IServiceCollection serviceCollection = new ServiceCollection();
-            serviceCollection.AddSingleton<IGreetingService, GreetingService>();
-            serviceCollection.AddSingleton<IGreetingService, ChineseGreetingService>();
-            serviceCollection.AddSingleton<IGreetingService, EnglishGreetingService>();
-
-            ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
-            ServiceLocator.Instance.SetServiceProvider(serviceProvider);
-
-            var greetingService = serviceProvider.GetService<IGreetingService>();
-            greetingService.Greeting();
-            var greetingService1 = ServiceLocator.Instance.GetService<IGreetingService>();
-            greetingService1.Greeting();
-            var test =greetingService.Equals(greetingService1);
+            DependencyInjectTest.Test();
 
             Console.CancelKeyPress += (sender, e) =>
             {
