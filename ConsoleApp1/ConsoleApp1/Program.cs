@@ -45,22 +45,11 @@ namespace ConsoleApp1
                 e.Cancel = false;
             };
 
-            EmitTest4.Test();
+            //EmitTest4.Test();
+            OOPTest.Test();
 
+            
             Console.ReadKey();
         }
-
-        private static long CreateId()
-        {
-            byte[] buffer = Guid.NewGuid().ToByteArray();
-
-            return BitConverter.ToInt64(buffer, 0);
-        }
-    }
-
-    public enum EnumTest
-    {
-        Test11,
-        Test22
     }
 }

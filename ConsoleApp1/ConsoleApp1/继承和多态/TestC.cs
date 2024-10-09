@@ -13,6 +13,7 @@ namespace ConsoleApp1.继承和多态
 
         public override void Print()
         {
+            Console.WriteLine("I am TestC");
             base.Print();
         }
 

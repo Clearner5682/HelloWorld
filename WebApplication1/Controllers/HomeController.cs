@@ -20,6 +20,8 @@ namespace WebApplication1.Controllers
 
         public IActionResult Index()
         {
+            return Redirect("http://localhost:5030/api/auth/redirecttoaio?redirectParams=test11");
+
             return View();
         }
 
