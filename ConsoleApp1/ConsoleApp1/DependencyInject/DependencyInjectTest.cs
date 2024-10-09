@@ -14,6 +14,8 @@ namespace ConsoleApp1.DependencyInject
 {
     public class DependencyInjectTest
     {
+        public static List<Assembly> externalAssemblies { get; set; } = new List<Assembly>();
+
         public static void Test()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -28,6 +30,7 @@ namespace ConsoleApp1.DependencyInject
                 Directory.GetFiles(externalLibPath, "*.dll").ToList().ForEach(dll =>
                 {
                     var assembly = Assembly.LoadFile(dll);
+                    externalAssemblies.Add(assembly);
                     var types = assembly.GetTypes();
                     var activityTypes = types.Where(t => typeof(IActivity).IsAssignableFrom(t));
                     foreach (var type in types)
@@ -48,6 +51,10 @@ namespace ConsoleApp1.DependencyInject
 
             var myApprove = serviceProvider.GetService<IActivity>();
             myApprove.Execute();
+
+            Type activityType = externalAssemblies.First().GetTypes().First(o => typeof(IActivity).IsAssignableFrom(o));
+            IActivity instance = (IActivity)Activator.CreateInstance(activityType);
+            instance.Execute();
         }
     }
 }
