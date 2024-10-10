@@ -19,6 +19,7 @@ using WebApplication1.Middlewares;
 using WebApplication1.MessageQueue;
 using Hangfire;
 using WebApplication1.Hangfire;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1
 {
@@ -124,6 +125,18 @@ namespace WebApplication1
             #endregion
 
             services.AddTransient<EmailSender>();
+
+            #region EFCore
+
+            services.AddDbContext<MyDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("AIO_Framework"), sqlServerOptions =>
+                {
+                    
+                });
+            });
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
