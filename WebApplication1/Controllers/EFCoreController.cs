@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplication1.Models;
+using WebApplication1.Models.EFCoreModels;
 
 namespace WebApplication1.Controllers
 {
@@ -21,10 +23,18 @@ namespace WebApplication1.Controllers
         [Route("QueryFromSp")]
         public async Task<IActionResult> QueryFromSp()
         {
-            var userName = "danny_hong";
-            var query = this.myDbContext.Set<UserEmail>().FromSqlRaw($"exec dbo.SP_GetEmail @UserName={userName}");
+            var businessType = "ARF";
+            var position = "Manager";
+            var extraConditions = new List<ExtraCondition>
+            {
+                new ExtraCondition{ ExtraConditionName="Customer",ExtraConditionValue="008" },
+                new ExtraCondition{ ExtraConditionName="Supplier",ExtraConditionValue="043" }
+            };
+            var query = this.myDbContext
+                        .Set<ExtraCondition>()
+                        .FromSql($"exec Elsa.SP_GetApproverByExtraConditions @BusinessType={businessType},@Position={position},@ExtraConditions={JsonConvert.SerializeObject(extraConditions)}");
 
-            var result = await query.Where(o=>o.UserName=="jack").ToListAsync();
+            var result = await query.ToListAsync();
 
             return Ok();
         }
