@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace ConsoleApp1.表达式树
@@ -20,6 +21,7 @@ namespace ConsoleApp1.表达式树
             //⑥ a[i-1]*i
             //⑦ a.Length>b|b>=0  a为String类型
             //⑧ new System.Drawing.Point(a,b)
+            //⑨ new UserInfo("Danny Hong").SayHello();
             Test1(100);
             Test2(50, 100);
             Test3(30, 60);
@@ -28,6 +30,7 @@ namespace ConsoleApp1.表达式树
             Test6(new int[] { 10, 20, 30 }, 2);
             Test7("abcdef", 8);
             Test8(40, 50);
+            Test9();
         }
 
         private static void Test1(object arg)
@@ -123,6 +126,37 @@ namespace ConsoleApp1.表达式树
             Delegate del = lambda.Compile();
             Console.WriteLine($"Expression8:{lambda.ToString()}");
             Console.WriteLine($"Result8:{del.DynamicInvoke(arg1, arg2)}");
+        }
+
+        private static void Test9()
+        {
+            ParameterExpression name = Expression.Parameter(typeof(string), "name");
+            NewExpression constructor = Expression.New(typeof(UserInfo).GetConstructor(new Type[] { typeof(string) }),name);
+            LambdaExpression constructorLambda = Expression.Lambda(constructor, name);
+            Delegate constructorDel = constructorLambda.Compile();
+            object obj = constructorDel.DynamicInvoke("Danny Hong");
+
+            // var test = obj;
+            ConstantExpression objConstant = Expression.Constant(obj);
+            MethodCallExpression sayHello = Expression.Call(objConstant, typeof(UserInfo).GetMethod("SayHello"));
+            LambdaExpression sayHelloLambda = Expression.Lambda(sayHello);
+            Delegate sayHelloDel = sayHelloLambda.Compile();
+            sayHelloDel.DynamicInvoke();
+        }
+
+        private class UserInfo
+        {
+            private string _name;
+            public UserInfo(string name)
+            {
+                Console.WriteLine($"Name:{name}");
+                _name = name;
+            }
+
+            public void SayHello()
+            {
+                Console.WriteLine($"Hello {_name}");
+            }
         }
     }
 }

@@ -33,8 +33,8 @@ namespace ConsoleApp1
                 e.Cancel = false;
             };
 
-            //EmitTest4.Test();
-            OOPTest.Test();
+            EmitTest5.Test();
+            //OOPTest.Test();
 
             
             Console.ReadKey();
