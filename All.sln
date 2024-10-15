@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "自定义外部程序集", "自定义外部程序集", "{1974C43A-39C3-40EC-8639-E70AA5C4E5A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomExternalLib", "CustomExternalLib\CustomExternalLib.csproj", "{271CB0BA-F444-4C1F-A000-77328481804C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomExternalLib", "CustomExternalLib\CustomExternalLib.csproj", "{271CB0BA-F444-4C1F-A000-77328481804C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{2F288D63-228F-4B7F-9BA7-A4FDEEAD3664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{2F288D63-228F-4B7F-9BA7-A4FDEEAD3664}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.SourceGenerator", "Demo.SourceGenerator\Demo.SourceGenerator.csproj", "{CC1297CD-4E37-4C88-A335-D21FAC2B31C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{2F288D63-228F-4B7F-9BA7-A4FDEEAD3664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F288D63-228F-4B7F-9BA7-A4FDEEAD3664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F288D63-228F-4B7F-9BA7-A4FDEEAD3664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC1297CD-4E37-4C88-A335-D21FAC2B31C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC1297CD-4E37-4C88-A335-D21FAC2B31C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC1297CD-4E37-4C88-A335-D21FAC2B31C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1297CD-4E37-4C88-A335-D21FAC2B31C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
