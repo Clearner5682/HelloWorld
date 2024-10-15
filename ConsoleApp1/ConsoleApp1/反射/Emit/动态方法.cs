@@ -32,10 +32,5 @@ namespace ConsoleApp1.反射.Emit
             
             Console.WriteLine("Add Result1:"+result1);
         }
-
-        public int Add(int x, int y)
-        {
-            return x + y;
-        }
     }
 }

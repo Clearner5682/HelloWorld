@@ -32,6 +32,7 @@ namespace ConsoleApp1.反射.Emit
             titleGetIL.Emit(OpCodes.Ret);
             MethodBuilder titleSet = typeBuilder.DefineMethod("set_Title", MethodAttributes.Public|MethodAttributes.SpecialName|MethodAttributes.HideBySig, null, new Type[] { typeof(string) });
             ILGenerator titleSetIL= titleSet.GetILGenerator();
+            // this.setfield(value)
             titleSetIL.Emit(OpCodes.Ldarg_0);
             titleSetIL.Emit(OpCodes.Ldarg_1);
             titleSetIL.Emit(OpCodes.Stfld, titleField);
@@ -47,6 +48,7 @@ namespace ConsoleApp1.反射.Emit
             contentGetIL.Emit(OpCodes.Ret);
             MethodBuilder contentSet = typeBuilder.DefineMethod("set_Content", MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig, null, new Type[] { typeof(string) });
             ILGenerator contentSetIL = contentSet.GetILGenerator();
+            // this.setfield(value)
             contentSetIL.Emit(OpCodes.Ldarg_0);
             contentSetIL.Emit(OpCodes.Ldarg_1);
             contentSetIL.Emit(OpCodes.Stfld, contentField);
