@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace ConsoleApp1.DependencyInject
@@ -27,9 +28,19 @@ namespace ConsoleApp1.DependencyInject
             _serviceProvider= serviceProvider;
         }
 
+        public void Intercept(Type serviceType,Type implementType)
+        {
+            if(OnRegistered!=null)
+            {
+                OnRegistered(serviceType,implementType);
+            }
+        }
+
         public T GetService<T>()
         {
             return this._serviceProvider.GetService<T>();
         }
+
+        public event Action<Type, Type> OnRegistered;
     }
 }

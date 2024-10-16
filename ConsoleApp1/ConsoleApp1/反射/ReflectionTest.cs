@@ -29,6 +29,20 @@ namespace ConsoleApp1.反射
                     Console.WriteLine($"{property.Name} is not equal.");
                 }
             }
+
+            // 创建泛型实例
+            CreateGenericInstance();
+        }
+
+        private static void CreateGenericInstance()
+        {
+            // 获取泛型类型
+            var type = typeof(List<>);
+
+            // 创建泛型实例
+            var listType = type.MakeGenericType(typeof(MyClass));
+            var list =(List<MyClass>)Activator.CreateInstance(listType);
+            list.Add(new MyClass { Id = 1, Name = "John" });
         }
     }
 

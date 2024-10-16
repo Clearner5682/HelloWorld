@@ -33,10 +33,9 @@ namespace ConsoleApp1
                 e.Cancel = false;
             };
 
-            EmitTest5.Test();
-            //OOPTest.Test();
+            INotifyService notifyService = ServiceLocator.Instance.GetService<INotifyService>();
+            notifyService.Notify();
 
-            
             Console.ReadKey();
         }
     }

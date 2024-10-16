@@ -1,4 +1,5 @@
 ﻿using Common;
+using ConsoleApp1.AOP;
 using ConsoleApp1.DependencyInject.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -22,6 +23,9 @@ namespace ConsoleApp1.DependencyInject
             serviceCollection.AddSingleton<IGreetingService, GreetingService>();
             serviceCollection.AddSingleton<IGreetingService, ChineseGreetingService>();
             serviceCollection.AddSingleton<IGreetingService, EnglishGreetingService>();
+            //serviceCollection.AddSingleton<INotifyService, NotifyService>();
+
+            DynamicProxyTest.Test(serviceCollection);
 
             // 从外部程序集注入服务
             var externalLibPath = Path.Combine(Directory.GetCurrentDirectory(), "CustomExternalLib");
@@ -40,8 +44,10 @@ namespace ConsoleApp1.DependencyInject
                 });
             }
 
+            ServiceLocator.Instance.Intercept(typeof(INotifyService), typeof(NotifyService));
             ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
             ServiceLocator.Instance.SetServiceProvider(serviceProvider);
+            
 
             var greetingService = serviceProvider.GetService<IGreetingService>();
             greetingService.Greeting();

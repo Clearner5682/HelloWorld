@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleApp1.AOP
 {
-    public class DynamicProxyTest
+    public interface INotifyService
     {
-        public static void Test()
-        {
-            
-        }
+        void Notify();
     }
 }
