@@ -72,10 +72,11 @@ namespace ConsoleApp1.反射.Emit
             //创建类
             Type type = typeBuilder.CreateType();
 
+            EmitTypeList.AddType(type);
+
 
             //调用
-            object obj = Activator.CreateInstance(type, "Car");
-            (obj as Vehicle).Run();
+            object obj = Activator.CreateInstance(type, "Porsche");
             (obj as IVehicle).Run();
         }
     }

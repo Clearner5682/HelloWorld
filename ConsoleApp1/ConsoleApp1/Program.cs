@@ -33,8 +33,11 @@ namespace ConsoleApp1
                 e.Cancel = false;
             };
 
-            INotifyService notifyService = ServiceLocator.Instance.GetService<INotifyService>();
-            notifyService.Notify();
+            EmitTest2.Test();
+
+            Type carType = EmitTypeList.GetType("Car");
+            IVehicle car = (IVehicle)Activator.CreateInstance(carType,"Benz");
+            car.Run();
 
             Console.ReadKey();
         }

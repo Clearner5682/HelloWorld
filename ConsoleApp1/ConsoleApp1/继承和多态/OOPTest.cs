@@ -10,6 +10,10 @@ namespace ConsoleApp1.继承和多态
         {
             TestC c = new TestC();
             c.Print();
+
+            ClassB b = new ClassB();
+            b.SayHello();
+            b.SayGoodbye();
         }
     }
 }
