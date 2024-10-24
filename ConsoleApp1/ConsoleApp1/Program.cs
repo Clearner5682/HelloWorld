@@ -21,7 +21,7 @@ using ConsoleApp1.反射.Emit;
 
 namespace ConsoleApp1
 {
-    class Program
+    partial class Program
     {
         static void Main(string[] args)
         {
@@ -39,7 +39,11 @@ namespace ConsoleApp1
             IVehicle car = (IVehicle)Activator.CreateInstance(carType,"Benz");
             car.Run();
 
+            HelloFrom("Source Generator");
+
             Console.ReadKey();
         }
+
+        static partial void HelloFrom(string name);
     }
 }
