@@ -39,11 +39,12 @@ namespace ConsoleApp1
             IVehicle car = (IVehicle)Activator.CreateInstance(carType,"Benz");
             car.Run();
 
-            HelloFrom("Source Generator");
-
             Console.ReadKey();
         }
 
-        static partial void HelloFrom(string name);
+        // 将Program类分为多个文件
+        // 1. 在Program类中定义一个partial方法
+        // 2. 在SourceGenerator中生成代码实现这个partial方法
+        // static partial void HelloFrom();
     }
 }
