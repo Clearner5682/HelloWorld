@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using ConsoleApp1.继承和多态;
 using ConsoleApp1.多线程相关;
 using ConsoleApp1.反射.Emit;
+using ConsoleApp1.Harmony;
 
 namespace ConsoleApp1
 {
@@ -38,6 +39,8 @@ namespace ConsoleApp1
             Type carType = EmitTypeList.GetType("Car");
             IVehicle car = (IVehicle)Activator.CreateInstance(carType,"Benz");
             car.Run();
+
+            HarmonyTest.Test();
 
             Console.ReadKey();
         }

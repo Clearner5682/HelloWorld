@@ -23,7 +23,7 @@ namespace ConsoleApp1.DependencyInject
             serviceCollection.AddSingleton<IGreetingService, GreetingService>();
             serviceCollection.AddSingleton<IGreetingService, ChineseGreetingService>();
             serviceCollection.AddSingleton<IGreetingService, EnglishGreetingService>();
-            //serviceCollection.AddSingleton<INotifyService, NotifyService>();
+            serviceCollection.AddSingleton<IEmailSender, SmtpEmailSender>();
 
             DynamicProxyTest.Test(serviceCollection);
 
