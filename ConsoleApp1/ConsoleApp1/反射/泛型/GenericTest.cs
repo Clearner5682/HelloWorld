@@ -20,7 +20,7 @@ namespace ConsoleApp1
     {
         public int ErrorCode { get; set; }
         public string Message { get; set; }
-        public T Data { get; private set; }
+        public T Data { get; set; }
     }
 
     public static class RespExtension
@@ -30,6 +30,20 @@ namespace ConsoleApp1
             Type type = resp.GetType();
             PropertyInfo propertyInfo = type.GetProperty("Data");
             propertyInfo.SetValue(resp, data);
+        }
+
+        public static void SetDataByLambda<T>(this IResp<T> resp,T data)
+        {
+            Type type = resp.GetType();
+            PropertyInfo propertyInfo = type.GetProperty("Data");
+            MethodInfo setMethod = propertyInfo.GetSetMethod();
+            
+            ParameterExpression parameter = Expression.Parameter(typeof(T), "data");
+            ConstantExpression constant = Expression.Constant(resp);// 定义一个常量，这个常量的值就是resp
+            MethodCallExpression methodCall = Expression.Call(constant, setMethod, parameter);// 由于是实例方法，所以第一个参数是实例对象（即前面定义的ConstantExpression）
+            LambdaExpression lambda = Expression.Lambda(methodCall, parameter);
+            Delegate del = lambda.Compile();
+            del.DynamicInvoke(data);
         }
     }
 
@@ -61,10 +75,10 @@ namespace ConsoleApp1
     {
         public static void Test()
         {
-            //IResp<dynamic> resp = new Resp<dynamic>();
-            //resp.Data = new { UserId = "1111", UserName = "hongyan", Age = 18 };
+            IResp<UserInfo> respUserInfo = new Resp<UserInfo>();
+            respUserInfo.SetDataByLambda(new UserInfo { UserId = "1111", UserName = "danny hong", Age = 33 });
 
-            //Console.WriteLine(JsonConvert.SerializeObject(resp));
+            Console.WriteLine(JsonConvert.SerializeObject(respUserInfo));
 
             // MakeGenericType
             Type genericType = typeof(Resp<>).MakeGenericType(typeof(UserInfo));
@@ -72,7 +86,7 @@ namespace ConsoleApp1
             object resp = genericType.Assembly.CreateInstance(genericType.FullName);
             //ConstructorInfo[] constructorInfos = genericType.GetConstructors();
             //object resp2 = constructorInfos[0].Invoke(null);
-            dataProperty.SetValue(resp, new UserInfo { UserId = "1111", UserName = "hongyan", Age = 18 });
+            dataProperty.SetValue(resp, new UserInfo { UserId = "8888", UserName = "linhao", Age = 31 });
             Console.WriteLine(JsonConvert.SerializeObject(resp));
 
             // MakeGenericMethod

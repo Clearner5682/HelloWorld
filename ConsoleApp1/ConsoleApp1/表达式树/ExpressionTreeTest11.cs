@@ -22,6 +22,7 @@ namespace ConsoleApp1.表达式树
             //⑦ a.Length>b|b>=0  a为String类型
             //⑧ new System.Drawing.Point(a,b)
             //⑨ new UserInfo("Danny Hong").SayHello();
+            //⑩ (a,b)=>function { x=a; y=b; return x+y }
             Test1(100);
             Test2(50, 100);
             Test3(30, 60);
@@ -31,6 +32,7 @@ namespace ConsoleApp1.表达式树
             Test7("abcdef", 8);
             Test8(40, 50);
             Test9();
+            Test10();
         }
 
         private static void Test1(object arg)
@@ -136,12 +138,41 @@ namespace ConsoleApp1.表达式树
             Delegate constructorDel = constructorLambda.Compile();
             object obj = constructorDel.DynamicInvoke("Danny Hong");
 
+            // 相当于
             // var test = obj;
+            // test.SayHello();
             ConstantExpression objConstant = Expression.Constant(obj);
             MethodCallExpression sayHello = Expression.Call(objConstant, typeof(UserInfo).GetMethod("SayHello"));
             LambdaExpression sayHelloLambda = Expression.Lambda(sayHello);
             Delegate sayHelloDel = sayHelloLambda.Compile();
             sayHelloDel.DynamicInvoke();
+        }
+
+        private static void Test10()
+        {
+            ParameterExpression paramA = Expression.Parameter(typeof(int), "a");
+            ParameterExpression paramB = Expression.Parameter(typeof(int), "b");
+            ParameterExpression localX = Expression.Variable(typeof(int), "x");
+            ParameterExpression localY= Expression.Variable(typeof(int), "y");
+            BinaryExpression assignX = Expression.Assign(localX, paramA);
+            BinaryExpression assignY = Expression.Assign(localY, paramB);
+            BinaryExpression add = Expression.Add(localX, localY);
+
+            LabelTarget returnTarget = Expression.Label(typeof(int));
+            GotoExpression returnExpression = Expression.Return(returnTarget,add,typeof(int));
+            LabelExpression labelExpression = Expression.Label(returnTarget, Expression.Constant(0));
+
+            BlockExpression block = Expression.Block(new[] { localX, localY }, assignX, assignY, returnExpression,labelExpression);
+            
+            LambdaExpression lambda = Expression.Lambda(block, paramA, paramB);
+            Delegate del = lambda.Compile();
+            int result = (int)del.DynamicInvoke(30, 20);
+
+
+            // 强类型的写法
+            Expression<Func<int, int, int>> strongTypeLambda = Expression.Lambda<Func<int, int, int>>(block, paramA, paramB);
+            Func<int, int, int> strongTypeDel = strongTypeLambda.Compile();
+            int result2 = strongTypeDel(30, 20);
         }
 
         private class UserInfo
