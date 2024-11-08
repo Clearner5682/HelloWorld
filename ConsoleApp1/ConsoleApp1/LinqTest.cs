@@ -12,13 +12,14 @@ namespace ConsoleApp1
         {
             var listA = new List<UserInfo>() {
                 new UserInfo{ UserId="111",UserName="name111",Age=18},
-                new UserInfo{ UserId="222",UserName="name333",Age=18},
-                new UserInfo{ UserId="333",UserName="name444",Age=18},
+                new UserInfo{ UserId="222",UserName="name222",Age=18},
+                new UserInfo{ UserId="333",UserName="name333",Age=18},
             };
             var listB = new List<UserInfo>() {
                 //new UserInfo{ UserId="111",UserName="name111",Age=18},
-                new UserInfo{ UserId="222",UserName="name555",Age=18},
-                new UserInfo{ UserId="333",UserName="name444",Age=18},
+                new UserInfo{ UserId="222",UserName="name222",Age=18},
+                new UserInfo{ UserId="333",UserName="name333",Age=18},
+                new UserInfo{ UserId="444",UserName="name444",Age=18}
             };
             var listScore = new List<UserScore> { 
                 new UserScore{ UserId="111",Score=75},
@@ -37,6 +38,11 @@ namespace ConsoleApp1
                         join b in listB on a.UserId equals b.UserId into result
                         from item in result.DefaultIfEmpty()
                         select new UserInfo { UserId = a.UserId, UserName = a.UserName+":"+(item==null?"":item.UserName), Age =a.Age+(item==null?0:item.Age) };
+
+            // 全连接
+            var listFull = from a in listA
+                           from b in listB
+                           select new { User1 = a, User2 = b };
 
 
             var listE = from a in listB
