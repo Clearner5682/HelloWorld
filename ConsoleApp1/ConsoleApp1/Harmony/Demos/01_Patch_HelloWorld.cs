@@ -10,7 +10,7 @@ namespace ConsoleApp1.Harmony
 {
     public class Patch_HelloWorld
     {
-        public static void Patch() 
+        public static void Test() 
         {
             var harmony = new HarmonyLib.Harmony("hello_world_patcher");
 

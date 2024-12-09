@@ -29,6 +29,19 @@ namespace ConsoleApp1.Harmony
             return result;
         }
 
+        public async Task<int> AddAsync(int x,int y)
+        {
+            await Task.CompletedTask;
+
+            int result = x + y;
+
+            Console.WriteLine($"Async Added Result:{result}");
+
+            throw new Exception("Async Exception");
+
+            return result;
+        }
+
         private void PrivateMethod()
         {
             Console.WriteLine($"Private Method:{_name}");
