@@ -19,6 +19,7 @@ using ConsoleApp1.继承和多态;
 using ConsoleApp1.多线程相关;
 using ConsoleApp1.反射.Emit;
 using ConsoleApp1.Harmony;
+using ConsoleApp1.Http请求;
 
 namespace ConsoleApp1
 {
@@ -34,15 +35,7 @@ namespace ConsoleApp1
                 e.Cancel = false;
             };
 
-            EmitTest2.Test();
-
-            Type carType = EmitTypeList.GetType("Car");
-            IVehicle car = (IVehicle)Activator.CreateInstance(carType,"Benz");
-            car.Run();
-
-            HarmonyTest.Test();
-
-            Console.ReadKey();
+            HttpRequestTest.Test();
         }
 
         // 将Program类分为多个文件
