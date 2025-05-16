@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using WebApplication1.Models.EFCoreModels;
+using WebApplication1.EFCore.Models.AIO_Framework;
+using WebApplication1.EFCore.Models.TestDb20240721;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace WebApplication1
+namespace WebApplication1.EFCore
 {
     public class MyDbContext : DbContext
     {
@@ -14,6 +15,16 @@ namespace WebApplication1
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            Configure_TestDb20240721(modelBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
+
+        private void Configure_AIO_Framework(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ExtraCondition>(entityBuilder =>
             {
@@ -42,14 +53,18 @@ namespace WebApplication1
                 entityBuilder.HasNoKey();
                 entityBuilder.ToTable("SP_GetApproverByExtraConditions", "Elsa");
             });
+        }
+
+        private void Configure_TestDb20240721(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TorrentInfo>(entityBuilder =>
+            {
+                entityBuilder.ToTable("TorrentInfos");
+                entityBuilder.HasKey(t => t.Id);
+            });
 
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
         }
     }
 }

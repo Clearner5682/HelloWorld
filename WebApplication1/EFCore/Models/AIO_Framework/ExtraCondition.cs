@@ -1,4 +1,4 @@
-﻿namespace WebApplication1.Models.EFCoreModels
+﻿namespace WebApplication1.EFCore.Models.AIO_Framework
 {
     public class ExtraCondition
     {

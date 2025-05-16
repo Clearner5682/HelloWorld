@@ -41,7 +41,7 @@ namespace WebApplication1.Controllers
         [Route("AddDelayed")]
         public async Task<IActionResult> AddDelayed()
         {
-            this.backgroundJobClient.Schedule(() => Console.WriteLine("Delayed!"),TimeSpan.FromSeconds(10));
+            this.backgroundJobClient.Schedule(() => Console.WriteLine("Delayed!"), TimeSpan.FromSeconds(10));
 
             await Task.CompletedTask;
 

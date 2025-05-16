@@ -5,7 +5,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplication1.Models.EFCoreModels;
+using WebApplication1.EFCore;
+using WebApplication1.EFCore.Models.AIO_Framework;
 
 namespace WebApplication1.Controllers
 {
@@ -20,6 +21,7 @@ namespace WebApplication1.Controllers
             this.myDbContext = myDbContext;
         }
 
+        [HttpGet]
         [Route("QueryFromSp")]
         public async Task<IActionResult> QueryFromSp()
         {
