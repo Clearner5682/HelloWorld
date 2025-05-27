@@ -63,6 +63,12 @@ namespace WebApplication1.EFCore
                 entityBuilder.HasKey(t => t.Id);
             });
 
+            modelBuilder.Entity<DownloadedTorrentInfo>(entityBuilder =>
+            {
+                entityBuilder.ToTable("DownloadedTorrentInfos");
+                entityBuilder.HasKey(t=>t.Id);
+            });
+
 
             base.OnModelCreating(modelBuilder);
         }
